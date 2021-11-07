@@ -18,6 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NewRecording"
+            android:exported="true" />
+        <activity
+            android:name=".PlayList"
+            android:exported="true" />
+        <activity
+            android:name=".Keyboard"
+            android:exported="true" />
+        <activity
+            android:name=".CheckRecording"
+            android:exported="true" />
     </application>
 
 </manifest>
