@@ -10,10 +10,16 @@
         <entry key="..\:/Documents/AndroidStudio/Meowsic/app/src/main/res/layout/key_board.xml" value="0.19907407407407407" />
         <entry key="..\:/Documents/AndroidStudio/Meowsic/app/src/main/res/layout/new_recording.xml" value="0.3375" />
         <entry key="..\:/Documents/AndroidStudio/Meowsic/app/src/main/res/layout/playlist.xml" value="0.28177083333333336" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/layout/activity_main.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/layout/check_recording.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/layout/key_board.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/layout/new_recording.xml" value="0.35104166666666664" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/layout/playlist.xml" value="0.33" />
+        <entry key="..\:/Users/marun/Fall_21_CS407/Meowsic/app/src/main/res/menu/playlistaddmenu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
