@@ -1,6 +1,7 @@
 package com.example.meowsic;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,5 +30,9 @@ public class PlayList extends ListActivity {
         nameList.add("file2.mp3");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.playlist_item,nameList);
         listView.setAdapter(arrayAdapter);
+    }
+    public void returnMain(View view){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -19,7 +19,8 @@
             android:layout_width="60dp"
             android:layout_height="fill_parent"
             android:backgroundTint="#FFFFFF"
-            android:src="@drawable/ic_baseline_arrow_back_ios_new_24" />
+            android:src="@drawable/ic_baseline_arrow_back_ios_new_24"
+            android:onClick="returnMain"/>
 
     </LinearLayout>
 
