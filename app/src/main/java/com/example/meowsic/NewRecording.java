@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +16,11 @@ public class NewRecording extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_recording);
 
-        TextView textView2 = findViewById(R.id.textView2);
+        //TextView textView2 = findViewById(R.id.textView2);
         Intent intent = getIntent();
-        textView2.setText("Recording Screen");
+        //textView2.setText("Recording Screen");
 
-        Button checkRecording = (Button) findViewById(R.id.button);
+        ImageButton checkRecording = (ImageButton) findViewById(R.id.button);
 
         checkRecording.setOnClickListener(new View.OnClickListener(){
         public void onClick(View v){
