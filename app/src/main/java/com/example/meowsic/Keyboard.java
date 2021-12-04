@@ -1,39 +1,32 @@
 package com.example.meowsic;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaRecorder;
 import android.media.SoundPool;
+import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.example.meowsic.Constants.*;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class Keyboard extends AppCompatActivity {
     private boolean state_start;
     private boolean recording;
-    protected MediaRecorder mRecorder;
+    private MediaProjectionManager mediaProjectionManager;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     private String fileName = null;
 
@@ -59,6 +52,7 @@ public class Keyboard extends AppCompatActivity {
     private int LOOP = 0;
     private float ONPRESS_RATE = 0.4f;
     private float ONRELEASE_RATE = 1.0f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +60,6 @@ public class Keyboard extends AppCompatActivity {
 
         state_start = true;
         recording = false;
-        mRecorder = new MediaRecorder();
         fileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
         fileName += "/AudioRecording.3gp";
 
@@ -77,20 +70,20 @@ public class Keyboard extends AppCompatActivity {
         mSoundPool = new SoundPool.Builder().setMaxStreams(12)
                 .setAudioAttributes(audio_attr).build();
 //                new SoundPool(10, AudioManager.STREAM_MUSIC,0);
-        asound = mSoundPool.load(getApplicationContext(),R.raw.a,1);
-        bsound = mSoundPool.load(getApplicationContext(),R.raw.b,1);
-        csound = mSoundPool.load(getApplicationContext(),R.raw.c,1);
-        dsound = mSoundPool.load(getApplicationContext(),R.raw.d,1);
-        esound = mSoundPool.load(getApplicationContext(),R.raw.e,1);
-        fsound = mSoundPool.load(getApplicationContext(),R.raw.f,1);
-        gsound = mSoundPool.load(getApplicationContext(),R.raw.g,1);
-        cssound = mSoundPool.load(getApplicationContext(),R.raw.c_hash,1);
-        csssound = mSoundPool.load(getApplicationContext(),R.raw.c_hash,1);
-        ccsound = mSoundPool.load(getApplicationContext(),R.raw.c2,1);
-        assound = mSoundPool.load(getApplicationContext(),R.raw.a_hash,1);
-        fssound = mSoundPool.load(getApplicationContext(),R.raw.f_hash,1);
-        gssound = mSoundPool.load(getApplicationContext(),R.raw.g_hash,1);
-        dssound = mSoundPool.load(getApplicationContext(),R.raw.d_hash,1);
+        asound = mSoundPool.load(getApplicationContext(), R.raw.a, 1);
+        bsound = mSoundPool.load(getApplicationContext(), R.raw.b, 1);
+        csound = mSoundPool.load(getApplicationContext(), R.raw.c, 1);
+        dsound = mSoundPool.load(getApplicationContext(), R.raw.d, 1);
+        esound = mSoundPool.load(getApplicationContext(), R.raw.e, 1);
+        fsound = mSoundPool.load(getApplicationContext(), R.raw.f, 1);
+        gsound = mSoundPool.load(getApplicationContext(), R.raw.g, 1);
+        cssound = mSoundPool.load(getApplicationContext(), R.raw.c_hash, 1);
+        csssound = mSoundPool.load(getApplicationContext(), R.raw.c_hash, 1);
+        ccsound = mSoundPool.load(getApplicationContext(), R.raw.c2, 1);
+        assound = mSoundPool.load(getApplicationContext(), R.raw.a_hash, 1);
+        fssound = mSoundPool.load(getApplicationContext(), R.raw.f_hash, 1);
+        gssound = mSoundPool.load(getApplicationContext(), R.raw.g_hash, 1);
+        dssound = mSoundPool.load(getApplicationContext(), R.raw.d_hash, 1);
 
 
         Button c_btn = findViewById(R.id.note_c);
@@ -117,22 +110,25 @@ public class Keyboard extends AppCompatActivity {
 //        });
 
     }
-    public void hit_a(View view){
-        mSoundPool.play(asound,LEFT_VOL,RIGHT_VOL,PRIORITY,LOOP,ONPRESS_RATE);
+
+    public void hit_a(View view) {
+        mSoundPool.play(asound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
-    public void hit_b(View view){
-        mSoundPool.play(bsound,LEFT_VOL,RIGHT_VOL,PRIORITY,LOOP,ONPRESS_RATE);
+
+    public void hit_b(View view) {
+        mSoundPool.play(bsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
-    public void hit_c(View view){
-        mSoundPool.play(csound,LEFT_VOL,RIGHT_VOL,PRIORITY,LOOP,ONPRESS_RATE);
+
+    public void hit_c(View view) {
+        mSoundPool.play(csound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
-    public void hit_d(View view){
-        mSoundPool.play(dsound,LEFT_VOL,RIGHT_VOL,PRIORITY,LOOP,ONPRESS_RATE);
+
+    public void hit_d(View view) {
+        mSoundPool.play(dsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
 
 
-
-    public void click_start_pause(View view)  {
+    public void click_start_pause(View view) {
 
         if (checkPermissions()) {
             ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
@@ -140,51 +136,38 @@ public class Keyboard extends AppCompatActivity {
             recording = true;
             if (state_start == true) {
 //                File newAudio = new File(fileName);
-                mRecorder.setOutputFile(fileName);
+
                 Log.i("path", fileName);
-                Log.i("external state",Environment.getExternalStorageState());
-                mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                try {
-                    mRecorder.prepare();}
-                catch (Exception e){
-                    Log.i("exception", e.getMessage());
-                }
-                mRecorder.start();
+                startMediaProjectionRequest();
+
+
                 Toast.makeText(getApplicationContext(), "Recording Started", Toast.LENGTH_LONG).show();
                 curBtn.setImageResource(android.R.drawable.ic_media_pause);
-//                } catch (Exception e) {
-//                    Log.i("exception", e.getMessage());
-//                    mRecorder.reset();
-//                    return;
-//                }
             } else {
                 curBtn.setImageResource(android.R.drawable.ic_media_play);
             }
             state_start = !state_start;
             monitor_stop_btn();
-        }
-        else{
+        } else {
             requestPermissions();
         }
     }
 
-    public void click_stop(View view){
-        ImageButton stopBtn = findViewById(R.id.kpanel_stop_btn);
+    public void click_stop(View view) {
         ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
         curBtn.setImageResource(android.R.drawable.ic_media_play);
         state_start = true;
         recording = false;
         monitor_stop_btn();
-        try {
-            mRecorder.stop();
-        }catch(Exception e){
-            Log.i("exception",e.getMessage());
-        }
-        mRecorder.release();
-        Log.i("func", "End Recording");
+
+        Log.i("recorder", "recording stop");
+        Intent serviceIntent = new Intent(getApplicationContext(), RecorderService.class);
+        serviceIntent.setAction(ACTION_STOP);
+        startService(serviceIntent);
+
     }
+
+
     private void monitor_stop_btn() {
         ImageButton stopBtn = findViewById(R.id.kpanel_stop_btn);
 
@@ -196,6 +179,16 @@ public class Keyboard extends AppCompatActivity {
         }
     }
 
+    private void startMediaProjectionRequest() {
+        mediaProjectionManager = (MediaProjectionManager) getApplication()
+                .getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+
+        startActivityForResult(
+                mediaProjectionManager.createScreenCaptureIntent(),
+                CAPTURE_MEDIA_PROJECTION_REQUEST_CODE
+        );
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -215,12 +208,45 @@ public class Keyboard extends AppCompatActivity {
 
         }
     }
+
     public boolean checkPermissions() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), RECORD_AUDIO);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
+
     private void requestPermissions() {
         ActivityCompat.requestPermissions(Keyboard.this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAPTURE_MEDIA_PROJECTION_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this,
+                        "MediaProjection permission obtained. Foreground service will be started to capture audio.",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                Intent audioCaptureIntent = new Intent(this, RecorderService.class);
+                audioCaptureIntent.setAction(ACTION_START);
+                audioCaptureIntent.putExtra(EXTRA_RESULT_DATA, data);
+                Log.i("recorder", "recording start");
+                startForegroundService(audioCaptureIntent);
+                Log.i("recorder", "recording start");
+            } else {
+                Toast.makeText(this,
+                        "Request to obtain MediaProjection denied.",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        } else if (requestCode == SELECT_OUTPUT_DIRECTORY_REQUEST_CODE) {
+            getSharedPreferences(PREFERENCES_APP_NAME, MODE_PRIVATE)
+                    .edit()
+                    .putString(PREFERENCES_KEY_OUTPUT_DIRECTORY, data == null ? "" : data.getData().toString())
+                    .apply();
+        }
     }
 }
