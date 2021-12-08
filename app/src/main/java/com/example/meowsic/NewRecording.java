@@ -2,6 +2,7 @@ package com.example.meowsic;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
 import java.io.IOException;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -21,8 +23,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class NewRecording extends AppCompatActivity {
     private MediaRecorder mMediaRecorder;
+    private MediaPlayer mPlayer;
     private static final int REQUEST_AUDIO_PERMISSION_CODE = 200;
-    private static String mFileName = null;
+    private static String fileName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class NewRecording extends AppCompatActivity {
         ImageButton start = (ImageButton) findViewById(R.id.start);
         ImageButton stop = (ImageButton) findViewById(R.id.stop);
         ImageButton menu = (ImageButton) findViewById(R.id.menu);
+        ImageButton play = (ImageButton) findViewById(R.id.play);
+        ImageButton p_stop = (ImageButton) findViewById(R.id.p_stop);
 
         menu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -52,6 +57,18 @@ public class NewRecording extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 stopRecord();
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                play();
+            }
+        });
+
+        p_stop.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                stop();
             }
         });
     }
@@ -75,13 +92,15 @@ public class NewRecording extends AppCompatActivity {
 
     public void startRecord() {
         if (CheckPermissions()) {
-            mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            mFileName += "/AudioRecording.3gp";
+            //fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+            //fileName = getExternalCacheDir().getAbsolutePath();
+            fileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+            fileName += "/AudioRecording.3gp";
             if (mMediaRecorder == null) {
                 mMediaRecorder = new MediaRecorder();
                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mMediaRecorder.setOutputFile(mFileName);
+                mMediaRecorder.setOutputFile(fileName);
                 mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
                 try {
@@ -91,13 +110,12 @@ public class NewRecording extends AppCompatActivity {
                 } catch (IllegalStateException e) {
                     System.out.println(e.getMessage());
                 }
-
             } else {
                 stopRecord();
                 mMediaRecorder = new MediaRecorder();
                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mMediaRecorder.setOutputFile(mFileName);
+                mMediaRecorder.setOutputFile(fileName);
                 mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
                 try {
@@ -115,9 +133,35 @@ public class NewRecording extends AppCompatActivity {
     }
 
     public void stopRecord() {
-        mMediaRecorder.stop();
-        mMediaRecorder.release();
-        mMediaRecorder = null;
+//        mMediaRecorder.stop();
+//        mMediaRecorder.release();
+//        mMediaRecorder = null;
+        if (mMediaRecorder != null) {
+            try {
+                mMediaRecorder.stop();
+            }catch(IllegalStateException e) {
+                mMediaRecorder = null;
+                mMediaRecorder = new MediaRecorder();
+            }
+            mMediaRecorder.release();
+            mMediaRecorder = null;
+        }
+    }
+
+    public void play() {
+        mPlayer = new MediaPlayer();
+        try {
+            mPlayer.setDataSource(fileName);
+            mPlayer.prepare();
+            mPlayer.start();
+        }catch(IOException e) {
+            Log.e("TAG", "prepare() failed");
+        }
+    }
+
+    public void stop() {
+        mPlayer.release();
+        mPlayer = null;
     }
 
 }
