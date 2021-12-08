@@ -1,5 +1,6 @@
 package com.example.meowsic;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -42,6 +43,11 @@ public class NewRecording extends AppCompatActivity {
         ImageButton play = (ImageButton) findViewById(R.id.play);
         ImageButton p_stop = (ImageButton) findViewById(R.id.p_stop);
 
+        start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+        stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+        play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+        p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+
         menu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 toCheckRecording();
@@ -50,24 +56,40 @@ public class NewRecording extends AppCompatActivity {
 
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                start.setBackgroundColor(getResources().getColor(R.color.design_default_color_secondary));
+                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
                 startRecord();
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
                 stopRecord();
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                play.setBackgroundColor(getResources().getColor(R.color.design_default_color_secondary));
+                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
                 play();
             }
         });
 
         p_stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
                 stop();
             }
         });
@@ -92,10 +114,8 @@ public class NewRecording extends AppCompatActivity {
 
     public void startRecord() {
         if (CheckPermissions()) {
-            //fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-            //fileName = getExternalCacheDir().getAbsolutePath();
             fileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-            fileName += "/AudioRecording.3gp";
+            fileName += "/Recorded Sound.3gp";
             if (mMediaRecorder == null) {
                 mMediaRecorder = new MediaRecorder();
                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -159,9 +179,12 @@ public class NewRecording extends AppCompatActivity {
         }
     }
 
+
     public void stop() {
-        mPlayer.release();
-        mPlayer = null;
+        if (mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
+        }
     }
 
 }
