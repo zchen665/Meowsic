@@ -60,7 +60,8 @@
             android:backgroundTint="#FFFFFF"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:src="@drawable/ic_baseline_share_24" />
+            android:src="@drawable/ic_baseline_share_24"
+            android:onClick="shareThatSong"/>
 
         <ImageButton
             android:id="@+id/playList_play"

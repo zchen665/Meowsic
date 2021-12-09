@@ -7,6 +7,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -85,7 +86,7 @@ public class PlayList extends ListActivity {
         tip.show();
         song = MediaPlayer.create(this, R.raw.song);
         // to play the audio from device's external storage
-        // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong);
+        // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong));
         song.setVolume(1,1);
         song.start();
     }
@@ -111,6 +112,19 @@ public class PlayList extends ListActivity {
         else{
             Toast tip = Toast.makeText(this, "select a song", Toast.LENGTH_SHORT);
             tip.show();
+        }
+    }
+    public void shareThatSong(View view){
+        // reference: https://stackoverflow.com/questions/13065838/what-are-the-possible-intent-types-for-intent-settypetype
+        if(currentSong != null){
+            Log.i("inshare","hi");
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, R.raw.song);
+            //shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(namePath.get(currentSong)));
+            shareIntent.setType("audio/*");
+            startActivity(Intent.createChooser(shareIntent, "Share the fantastic song!"));
+
         }
     }
 
