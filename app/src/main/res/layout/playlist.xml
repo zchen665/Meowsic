@@ -37,9 +37,9 @@
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="449dp"
             android:background="#C6D4F8"
-            android:visibility="visible" >
+            android:visibility="visible">
 
         </ListView>
     </RelativeLayout>
@@ -47,8 +47,9 @@
     <LinearLayout
         android:id="@+id/playList_bottom"
         android:layout_width="match_parent"
-        android:layout_height="129dp"
+        android:layout_height="223dp"
         android:layout_below="@+id/playList_body"
+        android:layout_marginTop="-94dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -68,7 +69,8 @@
             android:backgroundTint="#FFFFFF"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:src="@drawable/ic_baseline_play_arrow_24" />
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            android:onClick="play"/>
 
         <ImageButton
             android:id="@+id/playList_pause"
@@ -77,7 +79,8 @@
             android:backgroundTint="#FFFFFF"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:src="@drawable/ic_baseline_pause_24" />
+            android:src="@drawable/ic_baseline_pause_24"
+            android:onClick="pauseThatSong"/>
     </LinearLayout>
 
 </RelativeLayout>
