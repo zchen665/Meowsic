@@ -44,6 +44,7 @@ public class PCMPlayer {
 
         mThread = new Thread(new PlayerProcess());
         mThread.start();
+        Log.i("PCMPlayer", "play!");
     }
 
     private final Runnable mLopingRunnable = new Runnable() {
@@ -112,13 +113,13 @@ public class PCMPlayer {
         }
     }
 
-    public void setLooping(){
-        isLooping = !isLooping;
-    }
-
-    public void pause(){
-
-    }
+//    public void setLooping(){
+//        isLooping = !isLooping;
+//    }
+//
+//    public void pause(){
+//
+//    }
 
     public void stop(){
         isPlay = false;

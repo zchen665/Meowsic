@@ -96,23 +96,9 @@ public class PlayList extends ListActivity {
         // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong));
 
 
-        if (songPath.contains(".pcm")) {//pcm files
-            PCMPlayer pcm = new PCMPlayer();
-            pcm.prepare(songPath);
-            pcm.play();
-        }else{
-            try {
-                song = new MediaPlayer();
-                song.setDataSource(songPath);
-
-
-                song.setVolume(1, 1);
-                song.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+        PCMPlayer pcm = new PCMPlayer();
+        pcm.prepare(songPath);
+        pcm.play();
 
     }
     public void play(View view){
