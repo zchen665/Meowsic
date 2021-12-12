@@ -190,6 +190,18 @@ public class Keyboard extends AppCompatActivity {
 
     }
 
+    public void return_home(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void to_list(View view){
+        Intent intent = new Intent(this, PlayList.class);
+
+        startActivity(intent);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
