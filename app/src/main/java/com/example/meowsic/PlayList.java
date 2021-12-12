@@ -7,6 +7,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -73,7 +74,7 @@ public class PlayList extends ListActivity {
         }
 
         // load file name as listItem
-        nameList.add("file1.mp3");
+        nameList.add("dummy.mp3");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.playlist_item,nameList);
         listView.setAdapter(arrayAdapter);
     }
@@ -81,19 +82,37 @@ public class PlayList extends ListActivity {
     public void returnMain(View view){
         if(song!=null){
             song.stop();
+            song = null;
         }
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
     public void playThatSong(View view){
         currentSong = ( (TextView) view ).getText().toString();
-        Toast tip = Toast.makeText(this, currentSong + " is playing", Toast.LENGTH_SHORT);
-        tip.show();
-        song = MediaPlayer.create(this, R.raw.song);
+//        Toast tip = Toast.makeText(this, currentSong + " is playing", Toast.LENGTH_SHORT);
+//        tip.show();
+        String songPath =  namePath.get(currentSong);
         // to play the audio from device's external storage
         // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong));
-        song.setVolume(1,1);
-        song.start();
+
+
+        if (songPath.contains(".mp3")) {
+            try {
+                song = new MediaPlayer();
+                song.setDataSource(songPath);
+                song.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+                song.setVolume(1, 1);
+                song.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{//pcm files
+            PCMPlayer pcm = new PCMPlayer();
+            pcm.prepare(songPath);
+            pcm.play();
+        }
+
     }
     public void play(View view){
         if(song!=null){

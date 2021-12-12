@@ -117,8 +117,7 @@ public class RecorderService extends Service {
          */
         AudioFormat audioFormat = new AudioFormat.Builder()
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-            .setSampleRate(8000)
-//                .setSampleRate(44100)
+                .setSampleRate(44100)
                 .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
                 .build();
 
@@ -163,7 +162,7 @@ public class RecorderService extends Service {
         File dir = new File(outputDirectory, "Meowsic");
         if (!dir.exists()) {
             dir.mkdir();
-            Log.i("files", "Meowsic is created");
+//            Log.i("files", "Meowsic is created");
         }
 
         File file;
