@@ -15,6 +15,7 @@
 
     <ImageButton
         android:id="@+id/start"
+        android:background="@drawable/button_style"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginBottom="30dp"
@@ -28,6 +29,7 @@
 
     <ImageButton
         android:id="@+id/stop"
+        android:background="@drawable/button_style"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="-200dp"
@@ -41,6 +43,7 @@
 
     <ImageButton
         android:id="@+id/play"
+        android:background="@drawable/button_style"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="-200dp"
@@ -54,6 +57,7 @@
 
     <ImageButton
         android:id="@+id/p_stop"
+        android:background="@drawable/button_style"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="-200dp"
@@ -70,7 +74,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recording"
-        android:textSize="30dp"
+        android:textSize="70dp"
+        android:textColor="#FFDAB9	"
+        android:textStyle="bold"
+        android:fontFamily="@font/ayear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/start"
         app:layout_constraintHorizontal_bias="0.498"
@@ -81,6 +88,7 @@
 
     <ImageButton
         android:id="@+id/menu"
+        android:background="@drawable/button_style"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginBottom="30dp"

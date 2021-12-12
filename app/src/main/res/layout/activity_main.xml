@@ -18,6 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome!"
+        android:textSize="70dp"
+        android:textColor="#F4A460"
+        android:textStyle="bold"
+        android:fontFamily="@font/ayear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,10 +31,14 @@
 
     <Button
         android:id="@+id/home_playlist"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
         android:text="Playlist"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/ayear"
+        android:background="@drawable/button_style"
         app:layout_constraintBottom_toTopOf="@+id/home_keyboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,20 +46,28 @@
 
     <Button
         android:id="@+id/home_keyboard"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
         android:text="Keyboard"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/ayear"
+        android:background="@drawable/button_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/home_new_timbre"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:text="New Timbre"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/ayear"
+        android:background="@drawable/button_style"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_keyboard" />
