@@ -46,7 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="449dp"
             android:background="#C6D4F8"
-            android:visibility="visible">
+            android:choiceMode="singleChoice"
+            android:listSelector="@drawable/list_selector"
+            >
 
         </ListView>
     </RelativeLayout>

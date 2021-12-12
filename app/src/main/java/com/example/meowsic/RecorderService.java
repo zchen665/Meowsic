@@ -58,7 +58,7 @@ public class RecorderService extends Service {
         // see: https://partnerissuetracker.corp.google.com/issues/139732252
         mediaProjectionManager = (MediaProjectionManager) getApplicationContext()
                 .getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        Log.i("recorder", "recorder service is created");
+//        Log.i("recorder", "recorder service is created");
     }
 
     private void createNotificationChannel() {
@@ -117,19 +117,11 @@ public class RecorderService extends Service {
          */
         AudioFormat audioFormat = new AudioFormat.Builder()
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-            .setSampleRate(8000)
-//                .setSampleRate(44100)
+                .setSampleRate(44100)
                 .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
                 .build();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         audioRecord = new AudioRecord.Builder()
@@ -138,7 +130,7 @@ public class RecorderService extends Service {
                 .setAudioPlaybackCaptureConfig(config)
                 .build();
 
-        Log.i("recorder","recorder start recording");
+//        Log.i("recorder","recorder start recording");
         audioCaptureThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -163,7 +155,7 @@ public class RecorderService extends Service {
         File dir = new File(outputDirectory, "Meowsic");
         if (!dir.exists()) {
             dir.mkdir();
-            Log.i("files", "Meowsic is created");
+//            Log.i("files", "Meowsic is created");
         }
 
         File file;
