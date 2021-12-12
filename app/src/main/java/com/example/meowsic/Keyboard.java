@@ -46,8 +46,8 @@ public class Keyboard extends AppCompatActivity {
     private int assound;
     private int fssound;
 
-    private float LEFT_VOL = 2.0f;
-    private float RIGHT_VOL = 2.0f;
+    private float LEFT_VOL = 1.0f;
+    private float RIGHT_VOL = 1.0f;
     private int PRIORITY = 1;
     private int LOOP = 0;
     private float ONPRESS_RATE = 0.4f;
@@ -70,7 +70,7 @@ public class Keyboard extends AppCompatActivity {
         mSoundPool = new SoundPool.Builder().setMaxStreams(12)
                 .setAudioAttributes(audio_attr).build();
 //                new SoundPool(10, AudioManager.STREAM_MUSIC,0);
-        asound = mSoundPool.load(getApplicationContext(), R.raw.a, 1);
+        asound = mSoundPool.load(getApplicationContext(), R.raw.a4, 1);
         bsound = mSoundPool.load(getApplicationContext(), R.raw.b, 1);
         csound = mSoundPool.load(getApplicationContext(), R.raw.c, 1);
         dsound = mSoundPool.load(getApplicationContext(), R.raw.d, 1);

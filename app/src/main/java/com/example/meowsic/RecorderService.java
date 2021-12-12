@@ -117,8 +117,8 @@ public class RecorderService extends Service {
          */
         AudioFormat audioFormat = new AudioFormat.Builder()
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-//            .setSampleRate(8000)
-                .setSampleRate(44100)
+            .setSampleRate(8000)
+//                .setSampleRate(44100)
                 .setChannelMask(AudioFormat.CHANNEL_IN_MONO)
                 .build();
 
@@ -155,6 +155,8 @@ public class RecorderService extends Service {
 
 
     private void writeAudioToFile() throws IOException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentTime = sdf.format(new Date());
         String outputDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         FileOutputStream fileOutputStream;
 
@@ -167,7 +169,7 @@ public class RecorderService extends Service {
         File file;
         short[] capturedAudioSamples = new short[NUM_SAMPLES_PER_READ];
         try {
-            file = new File(dir.getAbsolutePath(), "test_audio.pcm");
+            file = new File(dir.getAbsolutePath(), currentTime + ".pcm");
             fileOutputStream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
