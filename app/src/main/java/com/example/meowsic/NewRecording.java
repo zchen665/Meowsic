@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -130,13 +131,13 @@ public class NewRecording extends AppCompatActivity {
                 dir.mkdir();
                 Log.i("files", "Meowsic is created");
             }
-            fileName += "/Meowsic/" + currentTime + ".3gp";
+            fileName += "/Meowsic/" + currentTime + ".mpeg";
             if (mMediaRecorder == null) {
                 mMediaRecorder = new MediaRecorder();
                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
                 mMediaRecorder.setOutputFile(fileName);
-                mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
 
                 try {
                     mMediaRecorder.prepare();
@@ -179,9 +180,11 @@ public class NewRecording extends AppCompatActivity {
 //                mMediaRecorder = new MediaRecorder();
             }
             mMediaRecorder.release();
-//            mMediaRecorder = null;
+            Toast.makeText(getApplicationContext(), "stored as "+fileName,Toast.LENGTH_LONG).show();
         }
     }
+
+    
 
     public void play() {
         mPlayer = new MediaPlayer();

@@ -100,8 +100,8 @@ public class Keyboard extends AppCompatActivity {
 //                    mSoundPool.setRate(asound,ONRELEASE_RATE);
 //                }
 //                else if (event.getAction()== MotionEvent.ACTION_UP){
-//                    Log.i("gg", "on release "+ streamIDs[2]);
-//                    mSoundPool.pause(streamIDs[2]);
+               Log.i("gg", "on release ");
+//                   mSoundPool.pause(streamIDs[2]);
 //                    mSoundPool.resume(streamIDs[2]);
 //                }
 //
