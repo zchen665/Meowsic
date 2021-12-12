@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -43,10 +44,10 @@ public class NewRecording extends AppCompatActivity {
         ImageButton play = (ImageButton) findViewById(R.id.play);
         ImageButton p_stop = (ImageButton) findViewById(R.id.p_stop);
 
-        start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-        stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-        play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-        p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//        start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//        stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//        play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//        p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
 
         menu.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -56,40 +57,44 @@ public class NewRecording extends AppCompatActivity {
 
         start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                start.setBackgroundColor(getResources().getColor(R.color.design_default_color_secondary));
-                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//                start.setBackgroundColor(getResources().getColor(R.color.design_default_color_secondary));
+//                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+//                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                start.setBackground(getDrawable(R.drawable.button_style2));
+                stop.setBackground(getDrawable(R.drawable.button_style));
+                play.setBackground(getDrawable(R.drawable.button_style));
+                p_stop.setBackground(getDrawable(R.drawable.button_style));
                 startRecord();
             }
         });
 
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                start.setBackground(getDrawable(R.drawable.button_style));
+                stop.setBackground(getDrawable(R.drawable.button_style));
+                play.setBackground(getDrawable(R.drawable.button_style));
+                p_stop.setBackground(getDrawable(R.drawable.button_style));
                 stopRecord();
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                play.setBackgroundColor(getResources().getColor(R.color.design_default_color_secondary));
-                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                start.setBackground(getDrawable(R.drawable.button_style));
+                stop.setBackground(getDrawable(R.drawable.button_style));
+                play.setBackground(getDrawable(R.drawable.button_style2));
+                p_stop.setBackground(getDrawable(R.drawable.button_style));
                 play();
             }
         });
 
         p_stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                start.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                play.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-                p_stop.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
+                start.setBackground(getDrawable(R.drawable.button_style));
+                stop.setBackground(getDrawable(R.drawable.button_style));
+                play.setBackground(getDrawable(R.drawable.button_style));
+                p_stop.setBackground(getDrawable(R.drawable.button_style));
                 stop();
             }
         });
