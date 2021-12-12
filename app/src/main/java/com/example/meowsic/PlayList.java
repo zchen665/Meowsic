@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -74,9 +75,16 @@ public class PlayList extends ListActivity {
         }
 
         // load file name as listItem
-        nameList.add("dummy.mp3");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.playlist_item,nameList);
         listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                playThatSong(view);
+            }
+        });
     }
 
     public void returnMain(View view){
@@ -89,8 +97,6 @@ public class PlayList extends ListActivity {
     }
     public void playThatSong(View view){
         currentSong = ( (TextView) view ).getText().toString();
-//        Toast tip = Toast.makeText(this, currentSong + " is playing", Toast.LENGTH_SHORT);
-//        tip.show();
         String songPath =  namePath.get(currentSong);
         // to play the audio from device's external storage
         // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong));
@@ -128,7 +134,6 @@ public class PlayList extends ListActivity {
     public void shareThatSong(View view){
         // reference: https://stackoverflow.com/questions/13065838/what-are-the-possible-intent-types-for-intent-settypetype
         if(currentSong != null){
-            Log.i("inshare","hi");
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_STREAM, R.raw.song);

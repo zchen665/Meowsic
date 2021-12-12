@@ -97,7 +97,8 @@
                 android:id="@+id/note_e"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_e"/>
         </FrameLayout>
 
         <FrameLayout
@@ -110,7 +111,8 @@
                 android:id="@+id/note_f"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_f"/>
         </FrameLayout>
 
         <FrameLayout
@@ -123,7 +125,8 @@
                 android:id="@+id/note_g"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_g"/>
         </FrameLayout>
 
         <FrameLayout
@@ -136,7 +139,8 @@
                 android:id="@+id/note_h"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_h"/>
         </FrameLayout>
 
         <FrameLayout
@@ -149,7 +153,8 @@
                 android:id="@+id/note_i"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_i"/>
         </FrameLayout>
 
         <FrameLayout
@@ -162,7 +167,8 @@
                 android:id="@+id/note_j"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_j"/>
         </FrameLayout>
 
         <FrameLayout
@@ -175,7 +181,8 @@
                 android:id="@+id/note_k"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_k"/>
         </FrameLayout>
 
         <FrameLayout
@@ -188,7 +195,8 @@
                 android:id="@+id/note_l"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="1dp" />
+                android:layout_marginLeft="1dp"
+                android:onClick="hit_l"/>
         </FrameLayout>
 
     </LinearLayout>
