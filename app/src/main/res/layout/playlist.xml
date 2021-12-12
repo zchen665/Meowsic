@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/cat" />
+
     <!-- header -->
     <LinearLayout
         android:id="@+id/playList_header"
