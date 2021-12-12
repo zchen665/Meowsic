@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -113,9 +116,16 @@ public class NewRecording extends AppCompatActivity {
     }
 
     public void startRecord() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentTime = sdf.format(new Date());
         if (CheckPermissions()) {
             fileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-            fileName += "/Recorded Sound.3gp";
+            File dir = new File(fileName, "Meowsic");
+            if (!dir.exists()) {
+                dir.mkdir();
+                Log.i("files", "Meowsic is created");
+            }
+            fileName += "/Meowsic/" + currentTime + ".3gp";
             if (mMediaRecorder == null) {
                 mMediaRecorder = new MediaRecorder();
                 mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -160,11 +170,11 @@ public class NewRecording extends AppCompatActivity {
             try {
                 mMediaRecorder.stop();
             }catch(IllegalStateException e) {
-                mMediaRecorder = null;
-                mMediaRecorder = new MediaRecorder();
+//                mMediaRecorder = null;
+//                mMediaRecorder = new MediaRecorder();
             }
             mMediaRecorder.release();
-            mMediaRecorder = null;
+//            mMediaRecorder = null;
         }
     }
 
