@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.AudioFormat;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -62,7 +64,26 @@ public class CheckRecording extends AppCompatActivity {
         });
     }
     public void replaceNotes(){
-        Toast.makeText(getApplicationContext(), "Replace notes", Toast.LENGTH_LONG).show();
+        File dir = new File(getApplicationContext().getFilesDir().getAbsolutePath());
+        File[] files = dir.listFiles();
+
+        if (files.length == 12) {
+            Toast.makeText(getApplicationContext(), "JUMP to Keyboart in 3s", Toast.LENGTH_LONG).show();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    toKeyboard();
+                }
+            }, 3000);
+        }else{
+            Toast.makeText(getApplicationContext(), "GEN audios not found", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void toKeyboard(){
+        Intent intent = new Intent(this, Keyboard.class);
+        intent.putExtra("mode", "NEW");
+        startActivity(intent);
     }
 
     public void goBack() {
@@ -113,7 +134,7 @@ public class CheckRecording extends AppCompatActivity {
     public void pitchProcessing(double playRate) throws FileNotFoundException {
         double rate = playRate;
 //        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/Meowsic/";
-        RandomAccessFile outputFile = new RandomAccessFile(getApplicationContext().getFilesDir() + "test_" + playRate + ".wav", "rw");
+        RandomAccessFile outputFile = new RandomAccessFile(getApplicationContext().getFilesDir() + "/test_" + playRate + ".wav", "rw");
 
         TarsosDSPAudioFormat outputFormat = new TarsosDSPAudioFormat(44100, 16, 1, true, false);
 
