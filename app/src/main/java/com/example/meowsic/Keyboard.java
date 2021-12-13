@@ -256,14 +256,14 @@ public class Keyboard extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_MEDIA_PROJECTION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
+                state_start = !state_start;
+                ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
+                curBtn.setImageResource(R.drawable.ic_baseline_stop_24);
                 Intent audioCaptureIntent = new Intent(this, RecorderService.class);
                 audioCaptureIntent.setAction(ACTION_START);
                 audioCaptureIntent.putExtra(EXTRA_RESULT_DATA, data);
                 startForegroundService(audioCaptureIntent);
-                state_start = !state_start;
-                ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
-                curBtn.setImageResource(R.drawable.ic_baseline_stop_24);
+
             } else {
                 Toast.makeText(this,
                         "Request to obtain MediaProjection denied.",
