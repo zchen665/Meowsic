@@ -53,6 +53,7 @@
             android:layout_height="449dp"
             android:background="#55FFFFFF"
             android:choiceMode="singleChoice"
+            android:translationZ="1dp"
             android:listSelector="@drawable/list_selector">
 
         </ListView>

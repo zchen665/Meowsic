@@ -58,16 +58,14 @@ public class PlayList extends ListActivity {
         ArrayList<String> nameList = new ArrayList<>();
         //1, create the list based on the songs in the storage
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(); // add directory name "meowisc?"
-        Log.d("Files", "Path: " + path);
         File dir = new File(path, "Meowsic");
         if (!dir.exists()) {
             dir.mkdir();
-            Log.i("files", "Meowsic is created");
         }
         path = dir.getPath();
         File directory = new File(path);
         File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
+
         for (int i = 0; i < files.length; i++)
         {
             nameList.add(files[i].getName());
