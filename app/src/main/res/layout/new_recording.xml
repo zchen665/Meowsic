@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="Recording"
         android:textSize="70dp"
-        android:textColor="#FFDAB9	"
+        android:textColor="#F4A460"
         android:textStyle="bold"
         android:fontFamily="@font/ayear"
         app:layout_constraintBottom_toBottomOf="parent"

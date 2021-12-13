@@ -86,8 +86,8 @@ public class Keyboard extends AppCompatActivity {
         dssound = mSoundPool.load(getApplicationContext(), R.raw.d_hash, 1);
 
 
-        Button c_btn = findViewById(R.id.note_c);
-        int[] streamIDs = new int[12];
+//        Button c_btn = findViewById(R.id.note_c);
+//        int[] streamIDs = new int[12];
 //        c_btn.setOnTouchListener(new View.OnTouchListener(){
 //            @SuppressLint("ClickableViewAccessibility")
 //            @Override
