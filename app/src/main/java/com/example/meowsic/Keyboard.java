@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+
 public class Keyboard extends AppCompatActivity {
     private boolean state_start;
     private boolean recording;
@@ -41,8 +43,6 @@ public class Keyboard extends AppCompatActivity {
     private int ccsound;
     private int cssound;
     private int csssound;
-    private int dssound;
-    private int gssound;
     private int assound;
     private int fssound;
 
@@ -57,6 +57,11 @@ public class Keyboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.key_board);
+        String loadMode = "default";
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            loadMode = extras.getString("mode");
+        }
 
         state_start = true;
         recording = false;
@@ -69,7 +74,15 @@ public class Keyboard extends AppCompatActivity {
                 .build();
         mSoundPool = new SoundPool.Builder().setMaxStreams(12)
                 .setAudioAttributes(audio_attr).build();
-//                new SoundPool(10, AudioManager.STREAM_MUSIC,0);
+
+        if (loadMode.equals("default")){
+            loadDefault();
+        }else{
+            loadNew();
+        }
+    }
+
+    private void loadDefault(){
         asound = mSoundPool.load(getApplicationContext(), R.raw.a, 1);
         bsound = mSoundPool.load(getApplicationContext(), R.raw.b, 1);
         csound = mSoundPool.load(getApplicationContext(), R.raw.c, 1);
@@ -82,6 +95,24 @@ public class Keyboard extends AppCompatActivity {
         ccsound = mSoundPool.load(getApplicationContext(), R.raw.c2, 1);
         assound = mSoundPool.load(getApplicationContext(), R.raw.a_hash, 1);
         fssound = mSoundPool.load(getApplicationContext(), R.raw.f_hash, 1);
+    }
+
+    private void loadNew(){
+        File dir = new File(getApplicationContext().getFilesDir().getAbsolutePath());
+//        String dirPath = dir.getPath() + "/";
+        File[] files = dir.listFiles();
+        asound =     mSoundPool.load(files[0].getPath(), 1);
+        bsound =     mSoundPool.load(files[1].getPath(), 1);
+        csound =     mSoundPool.load(files[2].getPath(), 1);
+        dsound =     mSoundPool.load(files[3].getPath(), 1);
+        esound =     mSoundPool.load(files[4].getPath(), 1);
+        fsound =     mSoundPool.load(files[5].getPath(), 1);
+        gsound =     mSoundPool.load(files[6].getPath(), 1);
+        cssound =    mSoundPool.load(files[7].getPath(), 1);
+        csssound =   mSoundPool.load(files[8].getPath(), 1);
+        ccsound =    mSoundPool.load(files[9].getPath(), 1);
+        assound =    mSoundPool.load(files[10].getPath(), 1);
+        fssound =    mSoundPool.load(files[11].getPath(), 1);
     }
 
     public void hit_a(View view) {
@@ -139,30 +170,23 @@ public class Keyboard extends AppCompatActivity {
 
             recording = true;
             if (state_start == true) {
-//                File newAudio = new File(fileName);
-
-                Log.i("path", fileName);
                 startMediaProjectionRequest();
 
-
-                Toast.makeText(getApplicationContext(), "Recording Started", Toast.LENGTH_LONG).show();
-                curBtn.setImageResource(android.R.drawable.ic_media_pause);
             } else {
                 curBtn.setImageResource(android.R.drawable.ic_media_play);
+                click_stop();
             }
-            state_start = !state_start;
-            monitor_stop_btn();
+
         } else {
             requestPermissions();
         }
     }
 
-    public void click_stop(View view) {
+    public void click_stop() {
         ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
         curBtn.setImageResource(android.R.drawable.ic_media_play);
         state_start = true;
         recording = false;
-        monitor_stop_btn();
 
         Log.i("recorder", "recording stop");
         Intent serviceIntent = new Intent(getApplicationContext(), RecorderService.class);
@@ -171,17 +195,6 @@ public class Keyboard extends AppCompatActivity {
 
     }
 
-
-    private void monitor_stop_btn() {
-        ImageButton stopBtn = findViewById(R.id.kpanel_stop_btn);
-
-        if (recording) {
-            stopBtn.setVisibility(View.VISIBLE);
-
-        } else {
-            stopBtn.setVisibility(View.INVISIBLE);
-        }
-    }
 
     private void startMediaProjectionRequest() {
         mediaProjectionManager = (MediaProjectionManager) getApplication()
@@ -221,6 +234,8 @@ public class Keyboard extends AppCompatActivity {
                     }
                 }
                 break;
+            default:
+                break;
 
         }
     }
@@ -241,28 +256,20 @@ public class Keyboard extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_MEDIA_PROJECTION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this,
-                        "MediaProjection permission obtained. Foreground service will be started to capture audio.",
-                        Toast.LENGTH_SHORT
-                ).show();
 
                 Intent audioCaptureIntent = new Intent(this, RecorderService.class);
                 audioCaptureIntent.setAction(ACTION_START);
                 audioCaptureIntent.putExtra(EXTRA_RESULT_DATA, data);
-                Log.i("recorder", "recording start");
                 startForegroundService(audioCaptureIntent);
-                Log.i("recorder", "recording start");
+                state_start = !state_start;
+                ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
+                curBtn.setImageResource(R.drawable.ic_baseline_stop_24);
             } else {
                 Toast.makeText(this,
                         "Request to obtain MediaProjection denied.",
                         Toast.LENGTH_SHORT
                 ).show();
             }
-        } else if (requestCode == SELECT_OUTPUT_DIRECTORY_REQUEST_CODE) {
-            getSharedPreferences(PREFERENCES_APP_NAME, MODE_PRIVATE)
-                    .edit()
-                    .putString(PREFERENCES_KEY_OUTPUT_DIRECTORY, data == null ? "" : data.getData().toString())
-                    .apply();
         }
     }
 }

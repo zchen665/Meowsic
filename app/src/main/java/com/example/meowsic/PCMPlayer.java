@@ -133,4 +133,19 @@ public class PCMPlayer {
             audioPlayer = null;
         }
     }
+
+
+    //melody change
+    public boolean isPlaying(){
+        return isPlay;
+    }
+    public void pause(){
+        isPlay = false;
+        if (mThread != null) {
+            mThread.interrupt(); //need to check the time state of pause
+        }
+        if (audioPlayer != null) {
+            audioPlayer.pause();
+        }
+    }
 }
