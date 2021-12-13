@@ -41,11 +41,13 @@ public class Keyboard extends AppCompatActivity {
     private int ccsound;
     private int cssound;
     private int csssound;
+    private int dssound;
+    private int gssound;
     private int assound;
     private int fssound;
 
-    private float LEFT_VOL = 1.0f;
-    private float RIGHT_VOL = 1.0f;
+    private float LEFT_VOL = 2.0f;
+    private float RIGHT_VOL = 2.0f;
     private int PRIORITY = 1;
     private int LOOP = 0;
     private float ONPRESS_RATE = 0.4f;
@@ -130,7 +132,6 @@ public class Keyboard extends AppCompatActivity {
         mSoundPool.play(fssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
 
-
     public void click_start_pause(View view) {
 
         if (checkPermissions()) {
@@ -138,6 +139,9 @@ public class Keyboard extends AppCompatActivity {
 
             recording = true;
             if (state_start == true) {
+//                File newAudio = new File(fileName);
+
+                Log.i("path", fileName);
                 startMediaProjectionRequest();
 
 
