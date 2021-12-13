@@ -1,8 +1,11 @@
 package com.example.meowsic;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -17,17 +21,27 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 public class NewRecording extends AppCompatActivity {
-    private MediaRecorder mMediaRecorder;
-    private MediaPlayer mPlayer;
+    PCMPlayer pcm;
+    private AudioRecord audioRecord;
     private static final int REQUEST_AUDIO_PERMISSION_CODE = 200;
     private static String fileName = null;
+    private int FREQUENCY = 44100;
+    private boolean recording;
+    int bufferSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +50,7 @@ public class NewRecording extends AppCompatActivity {
 
         //TextView textView2 = findViewById(R.id.textView2);
         Intent intent = getIntent();
-        //textView2.setText("Recording Screen");
+        recording = false;
 
         ImageButton start = (ImageButton) findViewById(R.id.start);
         ImageButton stop = (ImageButton) findViewById(R.id.stop);
@@ -117,78 +131,94 @@ public class NewRecording extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
-    public void startRecord() {
+    public void getFilename() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentTime = sdf.format(new Date());
         if (CheckPermissions()) {
             fileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-            fileName += "/Recorded Sound.3gp";
-            if (mMediaRecorder == null) {
-                mMediaRecorder = new MediaRecorder();
-                mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mMediaRecorder.setOutputFile(fileName);
-                mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-                try {
-                    mMediaRecorder.prepare();
-                } catch (IOException e) {
-                    Log.e("TAG", "prepare() failed");
-                } catch (IllegalStateException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else {
-                stopRecord();
-                mMediaRecorder = new MediaRecorder();
-                mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mMediaRecorder.setOutputFile(fileName);
-                mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-                try {
-                    mMediaRecorder.prepare();
-                } catch (IllegalStateException | IOException e) {
-//                    Log.e("TAG", "prepare() failed");
-                    e.printStackTrace();
-                }
+            File dir = new File(fileName, "Meowsic");
+            if (!dir.exists()) {
+                dir.mkdir();
+                Log.i("files", "Meowsic is created");
             }
-            mMediaRecorder.start();
+            fileName += "/Meowsic/" + currentTime + ".wav";
 
         } else {
             RequestPermissions();
         }
     }
 
-    public void stopRecord() {
-//        mMediaRecorder.stop();
-//        mMediaRecorder.release();
-//        mMediaRecorder = null;
-        if (mMediaRecorder != null) {
-            try {
-                mMediaRecorder.stop();
-            }catch(IllegalStateException e) {
-                mMediaRecorder = null;
-                mMediaRecorder = new MediaRecorder();
-            }
-            mMediaRecorder.release();
-            mMediaRecorder = null;
+    public void startRecord() {
+        final int CHANNELCONFIG = AudioFormat.CHANNEL_IN_MONO;
+        recording = true;
+        if (fileName == null) {
+            getFilename();
         }
+        bufferSize = AudioRecord.getMinBufferSize(FREQUENCY, CHANNELCONFIG, AudioFormat.ENCODING_PCM_16BIT);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            RequestPermissions();
+            return;
+        }
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, FREQUENCY, CHANNELCONFIG, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
+        Thread audioThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    recording();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        audioThread.start();
+        audioRecord.startRecording();
     }
+
+
+    public void stopRecord() {
+        recording = false;
+        Toast.makeText(getApplicationContext(), "stored as " + fileName, Toast.LENGTH_LONG).show();
+
+    }
+
+    private void recording() throws FileNotFoundException {
+        OutputStream os = null;
+        os = new FileOutputStream(fileName);
+
+        byte[] audioData = new byte[bufferSize];
+        int read = 0;
+
+        while (recording) {
+            read = audioRecord.read(audioData,0,bufferSize);
+            if(AudioRecord.ERROR_INVALID_OPERATION != read){
+                try {
+                    os.write(audioData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            os.close();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+        Log.e("TAGG", "recording ended");
+    }
+
 
     public void play() {
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(fileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        }catch(IOException e) {
-            Log.e("TAG", "prepare() failed");
+        if (fileName != null) {
+            pcm = new PCMPlayer();
+            pcm.prepare(fileName);
+            pcm.play();
         }
     }
 
-
     public void stop() {
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
+        if (pcm != null) {
+            pcm.stop();
         }
     }
 

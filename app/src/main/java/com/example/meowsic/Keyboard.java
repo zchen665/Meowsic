@@ -41,13 +41,11 @@ public class Keyboard extends AppCompatActivity {
     private int ccsound;
     private int cssound;
     private int csssound;
-    private int dssound;
-    private int gssound;
     private int assound;
     private int fssound;
 
-    private float LEFT_VOL = 2.0f;
-    private float RIGHT_VOL = 2.0f;
+    private float LEFT_VOL = 1.0f;
+    private float RIGHT_VOL = 1.0f;
     private int PRIORITY = 1;
     private int LOOP = 0;
     private float ONPRESS_RATE = 0.4f;
@@ -82,33 +80,6 @@ public class Keyboard extends AppCompatActivity {
         ccsound = mSoundPool.load(getApplicationContext(), R.raw.c2, 1);
         assound = mSoundPool.load(getApplicationContext(), R.raw.a_hash, 1);
         fssound = mSoundPool.load(getApplicationContext(), R.raw.f_hash, 1);
-        gssound = mSoundPool.load(getApplicationContext(), R.raw.g_hash, 1);
-        dssound = mSoundPool.load(getApplicationContext(), R.raw.d_hash, 1);
-
-
-//        Button c_btn = findViewById(R.id.note_c);
-//        int[] streamIDs = new int[12];
-//        c_btn.setOnTouchListener(new View.OnTouchListener(){
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (event.getAction()== MotionEvent.ACTION_DOWN){
-//                    int tmp = mSoundPool.play(csound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-//                    Log.i("gg", "onpress " + tmp);
-//                    streamIDs[2] = tmp;
-//
-//                    mSoundPool.setRate(asound,ONRELEASE_RATE);
-//                }
-//                else if (event.getAction()== MotionEvent.ACTION_UP){
-//                    Log.i("gg", "on release "+ streamIDs[2]);
-//                    mSoundPool.pause(streamIDs[2]);
-//                    mSoundPool.resume(streamIDs[2]);
-//                }
-//
-//                return true;
-//            }
-//        });
-
     }
 
     public void hit_a(View view) {
@@ -127,6 +98,38 @@ public class Keyboard extends AppCompatActivity {
         mSoundPool.play(dsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
 
+    public void hit_e(View view) {
+        mSoundPool.play(esound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_f(View view) {
+        mSoundPool.play(fsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_g(View view) {
+        mSoundPool.play(gsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_h(View view) {
+        mSoundPool.play(cssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_i(View view) {
+        mSoundPool.play(csssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_j(View view) {
+        mSoundPool.play(ccsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_k(View view) {
+        mSoundPool.play(assound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
+    public void hit_l(View view) {
+        mSoundPool.play(fssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
+    }
+
 
     public void click_start_pause(View view) {
 
@@ -135,9 +138,6 @@ public class Keyboard extends AppCompatActivity {
 
             recording = true;
             if (state_start == true) {
-//                File newAudio = new File(fileName);
-
-                Log.i("path", fileName);
                 startMediaProjectionRequest();
 
 
@@ -188,6 +188,18 @@ public class Keyboard extends AppCompatActivity {
                 CAPTURE_MEDIA_PROJECTION_REQUEST_CODE
         );
 
+    }
+
+    public void return_home(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
+    }
+
+    public void to_list(View view){
+        Intent intent = new Intent(this, PlayList.class);
+
+        startActivity(intent);
     }
 
     @Override

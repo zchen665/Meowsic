@@ -118,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_e"/>
         </FrameLayout>
 
         <FrameLayout
@@ -133,7 +134,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_f"/>
         </FrameLayout>
 
         <FrameLayout
@@ -148,7 +150,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_g"/>
         </FrameLayout>
 
         <FrameLayout
@@ -163,7 +166,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_h"/>
         </FrameLayout>
 
         <FrameLayout
@@ -178,7 +182,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_i"/>
         </FrameLayout>
 
         <FrameLayout
@@ -193,7 +198,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_j"/>
         </FrameLayout>
 
         <FrameLayout
@@ -208,7 +214,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_k"/>
         </FrameLayout>
 
         <FrameLayout
@@ -223,7 +230,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
-                app:srcCompat="@drawable/paw_sel"/>
+                app:srcCompat="@drawable/paw_sel"
+                android:onClick="hit_l"/>
         </FrameLayout>
 
     </LinearLayout>
@@ -237,7 +245,9 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
+        app:srcCompat="@android:drawable/ic_menu_revert"
+        android:onClick="return_home"
+        />
 
     <LinearLayout
         android:layout_width="115dp"
@@ -267,7 +277,7 @@
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:srcCompat="@android:drawable/alert_light_frame"
+            app:srcCompat="@drawable/ic_baseline_stop_24"
             tools:layout_editor_absoluteX="248dp"
             tools:layout_editor_absoluteY="192dp"
             android:onClick="click_stop"/>
@@ -283,7 +293,8 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+        app:srcCompat="@android:drawable/ic_menu_sort_by_size"
+        android:onClick="to_list"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
