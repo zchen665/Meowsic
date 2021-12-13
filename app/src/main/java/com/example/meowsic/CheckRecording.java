@@ -44,9 +44,17 @@ public class CheckRecording extends AppCompatActivity {
             latestFilePath = extras.getString("latestRec");
         }
 
+        ImageButton retHome = findViewById(R.id.cr_menu);
         Button retBtn = (Button) findViewById(R.id.button5);
         Button replaceBtn  = (Button) findViewById(R.id.button4);
         Button genBtn  = (Button) findViewById(R.id.button3);
+
+        retHome.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                toHome();
+            }
+        });
+
         retBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goBack();
@@ -67,7 +75,7 @@ public class CheckRecording extends AppCompatActivity {
         File dir = new File(getApplicationContext().getFilesDir().getAbsolutePath());
         File[] files = dir.listFiles();
 
-        if (files.length == 12) {
+        if (files.length >= 12) {
             Toast.makeText(getApplicationContext(), "JUMP to Keyboart in 3s", Toast.LENGTH_LONG).show();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -78,6 +86,7 @@ public class CheckRecording extends AppCompatActivity {
         }else{
             Toast.makeText(getApplicationContext(), "GEN audios not found", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void toKeyboard(){
@@ -88,6 +97,11 @@ public class CheckRecording extends AppCompatActivity {
 
     public void goBack() {
         Intent intent = new Intent(this, NewRecording.class);
+        startActivity(intent);
+    }
+
+    public void toHome(){
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -107,7 +121,7 @@ public class CheckRecording extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                pitchProcessing(0.5 + 0.1* finalI);
+                                pitchProcessing(0.1 + 0.03* finalI);
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             }
@@ -142,20 +156,21 @@ public class CheckRecording extends AppCompatActivity {
         RateTransposer rateTransposer;
 
         WaveformSimilarityBasedOverlapAdd wsola;
-
-        AudioDispatcher dispatcher =  new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, outputFormat), 2048, 0);
-        rateTransposer = new RateTransposer(rate);
         wsola = new WaveformSimilarityBasedOverlapAdd(WaveformSimilarityBasedOverlapAdd.Parameters.musicDefaults(rate, 44100));
+        AudioDispatcher dispatcher =  new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, outputFormat), wsola.getInputBufferSize(), wsola.getOverlap());
+        rateTransposer = new RateTransposer(rate);
+
         WriterProcessor writer = new WriterProcessor(outputFormat, outputFile);
 
-        dispatcher.addAudioProcessor(new MultichannelToMono(1,true));
-//        wsola.setDispatcher(dispatcher);
-//        dispatcher.addAudioProcessor(wsola);
+//        dispatcher.addAudioProcessor(new MultichannelToMono(1,true));
+        wsola.setDispatcher(dispatcher);
+        dispatcher.addAudioProcessor(wsola);
         dispatcher.addAudioProcessor(rateTransposer);
-//        dispatcher.addAudioProcessor(new AndroidAudioPlayer(dispatcher.getFormat()));
         dispatcher.addAudioProcessor(writer);
+        dispatcher.setZeroPadFirstBuffer(true);
+        dispatcher.setZeroPadLastBuffer(true);
         dispatcher.run();
-//        Toast.makeText(getApplicationContext(), "pitch end", Toast.LENGTH_LONG).show();
+
     }
 
 
