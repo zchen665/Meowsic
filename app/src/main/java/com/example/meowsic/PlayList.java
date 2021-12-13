@@ -38,7 +38,7 @@ public class PlayList extends ListActivity {
 
     ListView listView;
     String currentSong;
-    MediaPlayer song=null;
+    PCMPlayer song;
     HashMap<String, String> namePath = new HashMap<String, String>();//fileName - path
 
     public static final int REQUEST_STORAGE_PERMISSION_CODE = 1;
@@ -102,14 +102,15 @@ public class PlayList extends ListActivity {
         // song = MediaPlayer.create(this, Uri.parse(namePath.get(currentSong));
 
 
-        PCMPlayer pcm = new PCMPlayer();
-        pcm.prepare(songPath);
-        pcm.play();
+        song = new PCMPlayer();
+        song.prepare(songPath);
+        song.play();
 
     }
     public void play(View view){
+        Log.i("from play","playing");
         if(song!=null){
-            song.start();
+            song.play();
         }
         else{
             Toast tip = Toast.makeText(this, "select a song", Toast.LENGTH_SHORT);
@@ -117,6 +118,7 @@ public class PlayList extends ListActivity {
         }
     }
     public void pauseThatSong(View view){
+        Log.i("from pause","pausing");
         if(song!=null){
             if(song.isPlaying()){
                 song.pause();

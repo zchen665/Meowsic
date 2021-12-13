@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import be.tarsos.dsp.AudioDispatcher;
+import be.tarsos.dsp.MultichannelToMono;
 import be.tarsos.dsp.io.TarsosDSPAudioFormat;
 import be.tarsos.dsp.io.UniversalAudioInputStream;
 import be.tarsos.dsp.io.android.AndroidAudioPlayer;
@@ -30,15 +31,19 @@ import be.tarsos.dsp.resample.RateTransposer;
 public class CheckRecording extends AppCompatActivity {
     private int counter;
     AudioDispatcher dispatcher;
+    String latestFilePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_recording);
-
-        counter = 0;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            latestFilePath = extras.getString("latestRec");
+        }
 
         Button retBtn = (Button) findViewById(R.id.button5);
         Button replaceBtn  = (Button) findViewById(R.id.button4);
+        Button genBtn  = (Button) findViewById(R.id.button4);
         retBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goBack();
@@ -46,9 +51,17 @@ public class CheckRecording extends AppCompatActivity {
         });
         replaceBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                replaceNotes();
+            }
+        });
+        genBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 startDSP();
             }
         });
+    }
+    public void replaceNotes(){
+        Toast.makeText(getApplicationContext(), "Replace notes", Toast.LENGTH_LONG).show();
     }
 
     public void goBack() {
@@ -56,7 +69,10 @@ public class CheckRecording extends AppCompatActivity {
         startActivity(intent);
     }
     public void startDSP() {
-        counter += 1;
+        if (latestFilePath == null){
+            Toast.makeText(getApplicationContext(), "Please record first", Toast.LENGTH_LONG).show();
+            return;
+        }
         Thread dspThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -81,13 +97,13 @@ public class CheckRecording extends AppCompatActivity {
             dispatcher = null;
         }
         Toast.makeText(getApplicationContext(), "pitch start", Toast.LENGTH_LONG).show();
-        double rate = 2.0;
+        double rate = 1.5;
         String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/Meowsic/";
-        String inputFile = filePath + "20211212_051456.wav";
+
         TarsosDSPAudioFormat outputFormat = new TarsosDSPAudioFormat(44100, 16, 1, true, false);
         RandomAccessFile outputFile = new RandomAccessFile(filePath + "testResult" + counter + ".wav", "rw");
 
-        FileInputStream fileInputStream = new FileInputStream(inputFile);
+        FileInputStream fileInputStream = new FileInputStream(latestFilePath);
         RateTransposer rateTransposer;
 
         WaveformSimilarityBasedOverlapAdd wsola;
@@ -97,38 +113,15 @@ public class CheckRecording extends AppCompatActivity {
         wsola = new WaveformSimilarityBasedOverlapAdd(WaveformSimilarityBasedOverlapAdd.Parameters.musicDefaults(rate, 44100));
         WriterProcessor writer = new WriterProcessor(outputFormat, outputFile);
 
+        dispatcher.addAudioProcessor(new MultichannelToMono(1,true));
 //        wsola.setDispatcher(dispatcher);
 //        dispatcher.addAudioProcessor(wsola);
         dispatcher.addAudioProcessor(rateTransposer);
-        dispatcher.addAudioProcessor(new AndroidAudioPlayer(dispatcher.getFormat()));
-        dispatcher.setZeroPadFirstBuffer(true);
-        dispatcher.setZeroPadLastBuffer(true);
+//        dispatcher.addAudioProcessor(new AndroidAudioPlayer(dispatcher.getFormat()));
         dispatcher.addAudioProcessor(writer);
         dispatcher.run();
-        Toast.makeText(getApplicationContext(), "pitch end", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(), "pitch end", Toast.LENGTH_LONG).show();
     }
-
-//    public void startDSP(){
-//        File inputFile = new File(source);
-//        AudioFormat format = AudioSystem.getAudioFileFormat(inputFile).getFormat();
-//        double sampleRate = format.getSampleRate();
-//        double factor = PitchShiftingExample.centToFactor(cents);
-//        RateTransposer rateTransposer = new RateTransposer(factor);
-//        WaveformSimilarityBasedOverlapAdd wsola = new WaveformSimilarityBasedOverlapAdd(WaveformSimilarityBasedOverlapAdd.Parameters.musicDefaults(factor, sampleRate));
-//        WriterProcessor writer = new WriterProcessor(outputFormat, outputFile);
-//        AudioDispatcher dispatcher;
-//        if(format.getChannels() != 1){
-//            dispatcher = AudioDispatcherFactory.fromFile(inputFile,wsola.getInputBufferSize() * format.getChannels(),wsola.getOverlap() * format.getChannels());
-//            dispatcher.addAudioProcessor(new MultichannelToMono(format.getChannels(),true));
-//        }else{
-//            dispatcher = AudioDispatcherFactory.fromFile(inputFile,wsola.getInputBufferSize(),wsola.getOverlap());
-//        }
-//        wsola.setDispatcher(dispatcher);
-//        dispatcher.addAudioProcessor(wsola);
-//        dispatcher.addAudioProcessor(rateTransposer);
-//        dispatcher.addAudioProcessor(writer);
-//        dispatcher.run();
-//    }
 
 
 }

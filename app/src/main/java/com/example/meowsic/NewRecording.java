@@ -116,7 +116,7 @@ public class NewRecording extends AppCompatActivity {
 
     public void toCheckRecording() {
         Intent intent = new Intent(this, CheckRecording.class);
-
+        intent.putExtra("latestRec", fileName);
         startActivity(intent);
     }
 
