@@ -41,11 +41,13 @@ public class Keyboard extends AppCompatActivity {
     private int ccsound;
     private int cssound;
     private int csssound;
+    private int dssound;
+    private int gssound;
     private int assound;
     private int fssound;
 
-    private float LEFT_VOL = 1.0f;
-    private float RIGHT_VOL = 1.0f;
+    private float LEFT_VOL = 2.0f;
+    private float RIGHT_VOL = 2.0f;
     private int PRIORITY = 1;
     private int LOOP = 0;
     private float ONPRESS_RATE = 0.4f;
@@ -98,38 +100,6 @@ public class Keyboard extends AppCompatActivity {
         mSoundPool.play(dsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
     }
 
-    public void hit_e(View view) {
-        mSoundPool.play(esound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_f(View view) {
-        mSoundPool.play(fsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_g(View view) {
-        mSoundPool.play(gsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_h(View view) {
-        mSoundPool.play(cssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_i(View view) {
-        mSoundPool.play(csssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_j(View view) {
-        mSoundPool.play(ccsound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_k(View view) {
-        mSoundPool.play(assound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
-    public void hit_l(View view) {
-        mSoundPool.play(fssound, LEFT_VOL, RIGHT_VOL, PRIORITY, LOOP, ONPRESS_RATE);
-    }
-
 
     public void click_start_pause(View view) {
 
@@ -138,6 +108,9 @@ public class Keyboard extends AppCompatActivity {
 
             recording = true;
             if (state_start == true) {
+//                File newAudio = new File(fileName);
+
+                Log.i("path", fileName);
                 startMediaProjectionRequest();
 
 
@@ -188,18 +161,6 @@ public class Keyboard extends AppCompatActivity {
                 CAPTURE_MEDIA_PROJECTION_REQUEST_CODE
         );
 
-    }
-
-    public void return_home(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-
-        startActivity(intent);
-    }
-
-    public void to_list(View view){
-        Intent intent = new Intent(this, PlayList.class);
-
-        startActivity(intent);
     }
 
     @Override
