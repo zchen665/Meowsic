@@ -101,18 +101,18 @@ public class Keyboard extends AppCompatActivity {
         File dir = new File(getApplicationContext().getFilesDir().getAbsolutePath());
 //        String dirPath = dir.getPath() + "/";
         File[] files = dir.listFiles();
-        asound =     mSoundPool.load(files[0].getPath(), 1);
-        bsound =     mSoundPool.load(files[1].getPath(), 1);
-        csound =     mSoundPool.load(files[2].getPath(), 1);
-        dsound =     mSoundPool.load(files[3].getPath(), 1);
-        esound =     mSoundPool.load(files[4].getPath(), 1);
-        fsound =     mSoundPool.load(files[5].getPath(), 1);
-        gsound =     mSoundPool.load(files[6].getPath(), 1);
-        cssound =    mSoundPool.load(files[7].getPath(), 1);
-        csssound =   mSoundPool.load(files[8].getPath(), 1);
-        ccsound =    mSoundPool.load(files[9].getPath(), 1);
-        assound =    mSoundPool.load(files[10].getPath(), 1);
-        fssound =    mSoundPool.load(files[11].getPath(), 1);
+        asound =     mSoundPool.load(files[11].getPath(), 1);
+        bsound =     mSoundPool.load(files[10].getPath(), 1);
+        csound =     mSoundPool.load(files[9].getPath(), 1);
+        dsound =     mSoundPool.load(files[8].getPath(), 1);
+        esound =     mSoundPool.load(files[7].getPath(), 1);
+        fsound =     mSoundPool.load(files[6].getPath(), 1);
+        gsound =     mSoundPool.load(files[5].getPath(), 1);
+        cssound =    mSoundPool.load(files[4].getPath(), 1);
+        csssound =   mSoundPool.load(files[3].getPath(), 1);
+        ccsound =    mSoundPool.load(files[2].getPath(), 1);
+        assound =    mSoundPool.load(files[1].getPath(), 1);
+        fssound =    mSoundPool.load(files[0].getPath(), 1);
     }
 
     public void hit_a(View view) {
