@@ -139,7 +139,6 @@ public class NewRecording extends AppCompatActivity {
             File dir = new File(fileName, "Meowsic");
             if (!dir.exists()) {
                 dir.mkdir();
-                Log.i("files", "Meowsic is created");
             }
             fileName += "/Meowsic/" + currentTime + ".wav";
 
@@ -151,9 +150,8 @@ public class NewRecording extends AppCompatActivity {
     public void startRecord() {
         final int CHANNELCONFIG = AudioFormat.CHANNEL_IN_MONO;
         recording = true;
-        if (fileName == null) {
-            getFilename();
-        }
+        getFilename();
+
         bufferSize = AudioRecord.getMinBufferSize(FREQUENCY, CHANNELCONFIG, AudioFormat.ENCODING_PCM_16BIT);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             RequestPermissions();

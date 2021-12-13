@@ -31,7 +31,6 @@ public class Keyboard extends AppCompatActivity {
     private MediaProjectionManager mediaProjectionManager;
     public static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     private String fileName = null;
-    private String loadMode = "default";
 
     private SoundPool mSoundPool;
     private int csound;
@@ -44,8 +43,6 @@ public class Keyboard extends AppCompatActivity {
     private int ccsound;
     private int cssound;
     private int csssound;
-    private int dssound;
-    private int gssound;
     private int assound;
     private int fssound;
 
@@ -60,7 +57,7 @@ public class Keyboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.key_board);
-
+        String loadMode = "default";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             loadMode = extras.getString("mode");
@@ -102,8 +99,7 @@ public class Keyboard extends AppCompatActivity {
 
     private void loadNew(){
         File dir = new File(getApplicationContext().getFilesDir().getAbsolutePath());
-        String dirPath = dir.getPath() + "/";
-        Log.i("in new", dirPath);
+//        String dirPath = dir.getPath() + "/";
         File[] files = dir.listFiles();
         asound =     mSoundPool.load(files[0].getPath(), 1);
         bsound =     mSoundPool.load(files[1].getPath(), 1);
@@ -174,30 +170,23 @@ public class Keyboard extends AppCompatActivity {
 
             recording = true;
             if (state_start == true) {
-//                File newAudio = new File(fileName);
-
-                Log.i("path", fileName);
                 startMediaProjectionRequest();
 
-
-                Toast.makeText(getApplicationContext(), "Recording Started", Toast.LENGTH_LONG).show();
-                curBtn.setImageResource(android.R.drawable.ic_media_pause);
             } else {
                 curBtn.setImageResource(android.R.drawable.ic_media_play);
+                click_stop();
             }
-            state_start = !state_start;
-            monitor_stop_btn();
+
         } else {
             requestPermissions();
         }
     }
 
-    public void click_stop(View view) {
+    public void click_stop() {
         ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
         curBtn.setImageResource(android.R.drawable.ic_media_play);
         state_start = true;
         recording = false;
-        monitor_stop_btn();
 
         Log.i("recorder", "recording stop");
         Intent serviceIntent = new Intent(getApplicationContext(), RecorderService.class);
@@ -206,17 +195,6 @@ public class Keyboard extends AppCompatActivity {
 
     }
 
-
-    private void monitor_stop_btn() {
-        ImageButton stopBtn = findViewById(R.id.kpanel_stop_btn);
-
-        if (recording) {
-            stopBtn.setVisibility(View.VISIBLE);
-
-        } else {
-            stopBtn.setVisibility(View.INVISIBLE);
-        }
-    }
 
     private void startMediaProjectionRequest() {
         mediaProjectionManager = (MediaProjectionManager) getApplication()
@@ -256,6 +234,8 @@ public class Keyboard extends AppCompatActivity {
                     }
                 }
                 break;
+            default:
+                break;
 
         }
     }
@@ -276,28 +256,20 @@ public class Keyboard extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_MEDIA_PROJECTION_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this,
-                        "MediaProjection permission obtained. Foreground service will be started to capture audio.",
-                        Toast.LENGTH_SHORT
-                ).show();
 
                 Intent audioCaptureIntent = new Intent(this, RecorderService.class);
                 audioCaptureIntent.setAction(ACTION_START);
                 audioCaptureIntent.putExtra(EXTRA_RESULT_DATA, data);
-                Log.i("recorder", "recording start");
                 startForegroundService(audioCaptureIntent);
-                Log.i("recorder", "recording start");
+                state_start = !state_start;
+                ImageButton curBtn = findViewById(R.id.kpanel_first_btn);
+                curBtn.setImageResource(R.drawable.ic_baseline_stop_24);
             } else {
                 Toast.makeText(this,
                         "Request to obtain MediaProjection denied.",
                         Toast.LENGTH_SHORT
                 ).show();
             }
-        } else if (requestCode == SELECT_OUTPUT_DIRECTORY_REQUEST_CODE) {
-            getSharedPreferences(PREFERENCES_APP_NAME, MODE_PRIVATE)
-                    .edit()
-                    .putString(PREFERENCES_KEY_OUTPUT_DIRECTORY, data == null ? "" : data.getData().toString())
-                    .apply();
         }
     }
 }
