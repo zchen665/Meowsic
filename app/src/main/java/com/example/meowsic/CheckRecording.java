@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.MultichannelToMono;
@@ -30,8 +31,8 @@ import be.tarsos.dsp.resample.RateTransposer;
 
 public class CheckRecording extends AppCompatActivity {
     private int counter;
-    AudioDispatcher dispatcher;
     String latestFilePath;
+    Toast dspDone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ public class CheckRecording extends AppCompatActivity {
 
         Button retBtn = (Button) findViewById(R.id.button5);
         Button replaceBtn  = (Button) findViewById(R.id.button4);
-        Button genBtn  = (Button) findViewById(R.id.button4);
+        Button genBtn  = (Button) findViewById(R.id.button3);
         retBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goBack();
@@ -68,47 +69,60 @@ public class CheckRecording extends AppCompatActivity {
         Intent intent = new Intent(this, NewRecording.class);
         startActivity(intent);
     }
+
+    //generate all 12 notes for replacement
     public void startDSP() {
         if (latestFilePath == null){
             Toast.makeText(getApplicationContext(), "Please record first", Toast.LENGTH_LONG).show();
             return;
         }
-        Thread dspThread = new Thread(new Runnable() {
+        Thread managerThread = new Thread(new Runnable() {
+            ArrayList<Thread> threads = new ArrayList<>();
             @Override
             public void run() {
-                try {
-                    pitchProcessing();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                for(int i = 0; i < 12; i++){
+                    int finalI = i;
+                    threads.add(new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                pitchProcessing(0.5 + 0.1* finalI);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }));
+                    threads.get(i).start();
+                    try {
+                        threads.get(i).join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Gen Audio Complete", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
-        dspThread.run();
-        try {
-            dspThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        managerThread.start();
     }
-    public void pitchProcessing() throws FileNotFoundException {
-        if (dispatcher != null){
-            dispatcher.stop();
-            dispatcher = null;
-        }
-        Toast.makeText(getApplicationContext(), "pitch start", Toast.LENGTH_LONG).show();
-        double rate = 1.5;
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/Meowsic/";
+
+
+    public void pitchProcessing(double playRate) throws FileNotFoundException {
+        double rate = playRate;
+//        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() +"/Meowsic/";
+        RandomAccessFile outputFile = new RandomAccessFile(getApplicationContext().getFilesDir() + "test_" + playRate + ".wav", "rw");
 
         TarsosDSPAudioFormat outputFormat = new TarsosDSPAudioFormat(44100, 16, 1, true, false);
-        RandomAccessFile outputFile = new RandomAccessFile(filePath + "testResult" + counter + ".wav", "rw");
 
         FileInputStream fileInputStream = new FileInputStream(latestFilePath);
         RateTransposer rateTransposer;
 
         WaveformSimilarityBasedOverlapAdd wsola;
 
-        dispatcher =  new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, outputFormat), 2048, 0);
+        AudioDispatcher dispatcher =  new AudioDispatcher(new UniversalAudioInputStream(fileInputStream, outputFormat), 2048, 0);
         rateTransposer = new RateTransposer(rate);
         wsola = new WaveformSimilarityBasedOverlapAdd(WaveformSimilarityBasedOverlapAdd.Parameters.musicDefaults(rate, 44100));
         WriterProcessor writer = new WriterProcessor(outputFormat, outputFile);
